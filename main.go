@@ -476,21 +476,25 @@ func exportBewertungenRoute(c echo.Context) error {
 
 	// Add table headers
 	pdf.SetFont("Arial", "B", 12)
-	pdf.CellFormat(30, 10, "Vorname", "1", 0, "", false, 0, "")
-	pdf.CellFormat(30, 10, "Nachname", "1", 0, "", false, 0, "")
-	pdf.CellFormat(30, 10, "HV-Punkte", "1", 0, "", false, 0, "")
-	pdf.CellFormat(30, 10, "LV-Punkte", "1", 0, "", false, 0, "")
-	pdf.CellFormat(30, 10, "Gesamtnote", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "Vorname", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "Nachname", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "HV-Punkte", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "HV-Note", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "LV-Punkte", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "LV-Note", "1", 0, "", false, 0, "")
+	pdf.CellFormat(27, 10, "Gesamtnote", "1", 0, "", false, 0, "")
 	pdf.Ln(-1)
 
 	// Add table rows
 	pdf.SetFont("Arial", "", 11)
 	for _, bewertung := range bewertungen {
-		pdf.CellFormat(30, 10, bewertung.Vorname, "1", 0, "", false, 0, "")
-		pdf.CellFormat(30, 10, bewertung.Nachname, "1", 0, "", false, 0, "")
-		pdf.CellFormat(30, 10, strconv.FormatFloat(bewertung.HvPunkte, 'f', 2, 64), "1", 0, "", false, 0, "")
-		pdf.CellFormat(30, 10, strconv.FormatFloat(bewertung.LvPunkte, 'f', 2, 64), "1", 0, "", false, 0, "")
-		pdf.CellFormat(30, 10, strconv.FormatInt(int64(bewertung.GesamtNote), 10), "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, bewertung.Vorname, "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, bewertung.Nachname, "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, strconv.FormatFloat(bewertung.HvPunkte, 'f', 2, 64), "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, strconv.FormatInt(int64(bewertung.HvNote), 10), "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, strconv.FormatFloat(bewertung.LvPunkte, 'f', 2, 64), "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, strconv.FormatInt(int64(bewertung.LvNote), 10), "1", 0, "", false, 0, "")
+		pdf.CellFormat(27, 10, strconv.FormatInt(int64(bewertung.GesamtNote), 10), "1", 0, "", false, 0, "")
 		pdf.Ln(-1)
 	}
 
@@ -501,9 +505,7 @@ func exportBewertungenRoute(c echo.Context) error {
 		return err
 	}
 
-	c.Response().Header().Set("Content-Disposition", "attachment; filename=bewertung.pdf")
-	c.Response().Header().Set("Content-Type", "application/pdf")
-	return c.Attachment("bewertung.pdf", "bewertung.pdf")
+	return c.HTML(http.StatusOK, "Export beendet")
 }
 
 func endRoute(c echo.Context) error {
